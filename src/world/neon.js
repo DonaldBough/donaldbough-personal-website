@@ -43,7 +43,8 @@ export function neonStrip(length, color, { thickness = 0.025, haloHeight = 0.35 
   const group = new THREE.Group();
   const tube = new THREE.Mesh(new THREE.BoxGeometry(length, thickness, thickness), neonMaterial(color));
   tube.position.z = thickness / 2;
-  const glow = halo(length + haloHeight, haloHeight, color);
+  // Halo stays within the tube length so it never widens a solid prop's collision bounds.
+  const glow = halo(length, haloHeight, color);
   glow.position.z = 0.003;
   group.add(tube, glow);
   return group;
