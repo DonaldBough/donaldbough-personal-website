@@ -2,10 +2,10 @@ import * as THREE from 'three/webgpu';
 
 // Shared materials reused across props. Reusing materials keeps GPU pipelines to a minimum.
 export const materials = {
-  paintedMetal: new THREE.MeshStandardMaterial({ color: 0x4f5a56, roughness: 0.55, metalness: 0.6 }),
+  paintedMetal: new THREE.MeshStandardMaterial({ color: 0x3a3f4a, roughness: 0.55, metalness: 0.6 }),
   darkMetal: new THREE.MeshStandardMaterial({ color: 0x23272a, roughness: 0.4, metalness: 0.8 }),
   brushedSteel: new THREE.MeshStandardMaterial({ color: 0x9aa0a3, roughness: 0.35, metalness: 0.9 }),
-  beigePlastic: new THREE.MeshStandardMaterial({ color: 0xcfc6ad, roughness: 0.6 }),
+  gunmetal: new THREE.MeshStandardMaterial({ color: 0x262a33, roughness: 0.35, metalness: 0.8 }),
   blackPlastic: new THREE.MeshStandardMaterial({ color: 0x151515, roughness: 0.5 }),
   epoxyTop: new THREE.MeshStandardMaterial({ color: 0x1b1e1d, roughness: 0.3 }),
   wood: new THREE.MeshStandardMaterial({ color: 0x6b4426, roughness: 0.55 }),

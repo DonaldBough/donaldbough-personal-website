@@ -41,23 +41,29 @@ function addSpeckle(ctx, size, count, alpha) {
   }
 }
 
-// 4x4 checkerboard of worn vinyl lab tiles.
+// Glossy black floor tiles. floorGlowTexture() draws the matching cyan grid lines for the emissive map.
 export function floorTexture(repeat) {
   const size = 1024;
   const { canvas, ctx } = createCanvas(size);
   const tile = size / 4;
-  const colors = ['#b9b6a6', '#4c5a53'];
-
   for (let y = 0; y < 4; y++) {
     for (let x = 0; x < 4; x++) {
-      ctx.fillStyle = colors[(x + y) % 2];
+      ctx.fillStyle = (x + y) % 2 ? '#0b0c11' : '#111319';
       ctx.fillRect(x * tile, y * tile, tile, tile);
     }
   }
-  addSpeckle(ctx, size, 20000, 0.12);
-  addGrime(ctx, size, { count: 900, maxAlpha: 0.08, maxRadius: 60 });
+  addSpeckle(ctx, size, 8000, 0.05);
+  addGrime(ctx, size, { count: 300, maxAlpha: 0.08, maxRadius: 60 });
+  return toTexture(canvas, { repeat });
+}
 
-  ctx.strokeStyle = 'rgba(20, 20, 18, 0.6)';
+export function floorGlowTexture(repeat) {
+  const size = 1024;
+  const { canvas, ctx } = createCanvas(size);
+  const tile = size / 4;
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, size, size);
+  ctx.strokeStyle = '#19e6ff';
   ctx.lineWidth = 3;
   for (let i = 0; i <= 4; i++) {
     ctx.beginPath();
@@ -70,64 +76,117 @@ export function floorTexture(repeat) {
   return toTexture(canvas, { repeat });
 }
 
-// Painted concrete for the upper walls, with drip streaks.
+// Gunmetal wall panels with dark seams and rivets.
 export function wallTexture(repeat) {
   const size = 1024;
   const { canvas, ctx } = createCanvas(size);
-  ctx.fillStyle = '#7d887f';
+  ctx.fillStyle = '#1d2029';
   ctx.fillRect(0, 0, size, size);
-  addSpeckle(ctx, size, 30000, 0.1);
-  addGrime(ctx, size, { count: 600, maxAlpha: 0.1, maxRadius: 80 });
+  addSpeckle(ctx, size, 12000, 0.06);
+  addGrime(ctx, size, { count: 200, maxAlpha: 0.12, maxRadius: 90 });
 
-  for (let i = 0; i < 40; i++) {
-    const x = Math.random() * size;
-    const length = Math.random() * size * 0.5;
-    const gradient = ctx.createLinearGradient(0, 0, 0, length);
-    gradient.addColorStop(0, 'rgba(30, 25, 15, 0.18)');
-    gradient.addColorStop(1, 'rgba(30, 25, 15, 0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(x, 0, Math.random() * 4 + 1, length);
+  const panel = size / 2;
+  for (let i = 0; i <= 2; i++) {
+    ctx.fillStyle = '#08090c';
+    ctx.fillRect(i * panel - 4, 0, 8, size);
+    ctx.fillRect(0, i * panel - 4, size, 8);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+    ctx.fillRect(i * panel + 4, 0, 2, size);
+    ctx.fillRect(0, i * panel + 4, size, 2);
+  }
+  ctx.fillStyle = '#3a3f4c';
+  for (let y = 0; y < 2; y++) {
+    for (let x = 0; x < 2; x++) {
+      for (const [dx, dy] of [[24, 24], [panel - 24, 24], [24, panel - 24], [panel - 24, panel - 24]]) {
+        ctx.beginPath();
+        ctx.arc(x * panel + dx, y * panel + dy, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
   return toTexture(canvas, { repeat });
 }
 
-// Small white ceramic tiles for the lower half of the walls.
+// Darker horizontal slats for the lower half of the walls.
 export function wainscotTexture(repeat) {
   const size = 512;
   const { canvas, ctx } = createCanvas(size);
-  const count = 8;
-  const tile = size / count;
-
-  ctx.fillStyle = '#3a3d38';
+  ctx.fillStyle = '#13151b';
   ctx.fillRect(0, 0, size, size);
-  for (let y = 0; y < count; y++) {
-    for (let x = 0; x < count; x++) {
-      const shade = 200 + Math.random() * 25;
-      ctx.fillStyle = `rgb(${shade}, ${shade}, ${shade - 12})`;
-      ctx.fillRect(x * tile + 2, y * tile + 2, tile - 4, tile - 4);
-    }
+  for (let y = 0; y < size; y += 64) {
+    ctx.fillStyle = '#07080b';
+    ctx.fillRect(0, y, size, 5);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.fillRect(0, y + 5, size, 2);
   }
-  addGrime(ctx, size, { count: 300, color: '60,50,30', maxAlpha: 0.12, maxRadius: 40 });
+  addSpeckle(ctx, size, 4000, 0.05);
   return toTexture(canvas, { repeat });
 }
 
-// Drop-ceiling acoustic panels.
+// Black ceiling panels.
 export function ceilingTexture(repeat) {
   const size = 512;
   const { canvas, ctx } = createCanvas(size);
-  ctx.fillStyle = '#a9a699';
+  ctx.fillStyle = '#0e0f14';
   ctx.fillRect(0, 0, size, size);
-  for (let i = 0; i < 6000; i++) {
-    ctx.fillStyle = `rgba(40, 40, 30, ${Math.random() * 0.25})`;
-    ctx.beginPath();
-    ctx.arc(Math.random() * size, Math.random() * size, Math.random() * 1.6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-  addGrime(ctx, size, { count: 120, color: '80,60,20', maxAlpha: 0.15, maxRadius: 50 });
-  ctx.strokeStyle = '#d8d6cc';
+  addSpeckle(ctx, size, 3000, 0.06);
+  ctx.strokeStyle = '#050609';
   ctx.lineWidth = 10;
   ctx.strokeRect(0, 0, size, size);
   return toTexture(canvas, { repeat });
+}
+
+// Soft white glow used for additive halos: a horizontal band ('strip') or a round blob ('spot').
+export function glowTexture(shape) {
+  const { canvas, ctx } = createCanvas(256, shape === 'strip' ? 64 : 256);
+  const { width, height } = canvas;
+  if (shape === 'strip') {
+    const vertical = ctx.createLinearGradient(0, 0, 0, height);
+    vertical.addColorStop(0, 'rgba(255,255,255,0)');
+    vertical.addColorStop(0.5, 'rgba(255,255,255,1)');
+    vertical.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = vertical;
+    ctx.fillRect(0, 0, width, height);
+    // Fade out the ends.
+    ctx.globalCompositeOperation = 'destination-in';
+    const horizontal = ctx.createLinearGradient(0, 0, width, 0);
+    horizontal.addColorStop(0, 'rgba(255,255,255,0)');
+    horizontal.addColorStop(0.05, 'rgba(255,255,255,1)');
+    horizontal.addColorStop(0.95, 'rgba(255,255,255,1)');
+    horizontal.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = horizontal;
+    ctx.fillRect(0, 0, width, height);
+  } else {
+    const radial = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    radial.addColorStop(0, 'rgba(255,255,255,1)');
+    radial.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = radial;
+    ctx.fillRect(0, 0, width, height);
+  }
+  const texture = toTexture(canvas);
+  texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
+}
+
+// Glowing neon lettering on a transparent background.
+export function neonSignTexture(text, color, { width = 1024, height = 160 } = {}) {
+  const { canvas, ctx } = createCanvas(width, height);
+  ctx.font = `bold ${height * 0.55}px "Courier New", monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = color;
+  ctx.lineWidth = 6;
+  for (const blur of [40, 20, 8]) {
+    ctx.shadowBlur = blur;
+    ctx.strokeStyle = color;
+    ctx.strokeText(text, width / 2, height / 2);
+  }
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#fff4fd';
+  ctx.fillText(text, width / 2, height / 2);
+  const texture = toTexture(canvas);
+  texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
 }
 
 // Simple framed placeholder "photo" until real images are added.
@@ -153,29 +212,16 @@ export function photoPlaceholderTexture(seed) {
   return toTexture(canvas);
 }
 
-// A sign with centered text, e.g. above the door.
-export function signTexture(text, { background = '#c9b23a', foreground = '#111', width = 512, height = 128 } = {}) {
-  const { canvas, ctx } = createCanvas(width, height);
-  ctx.fillStyle = background;
-  ctx.fillRect(0, 0, width, height);
-  ctx.fillStyle = foreground;
-  ctx.font = `bold ${height * 0.5}px Courier New`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(text, width / 2, height / 2);
-  return toTexture(canvas);
-}
-
-// A green-phosphor CRT screen. Call draw() again to update the text.
-export function createScreenTexture() {
+// A glowing terminal screen. Call draw() again to update the text.
+export function createScreenTexture({ color = '#19e6ff', background = '#02080d' } = {}) {
   const { canvas, ctx } = createCanvas(512, 384);
   const texture = toTexture(canvas);
 
   function draw(lines, cursorVisible) {
-    ctx.fillStyle = '#031208';
+    ctx.fillStyle = background;
     ctx.fillRect(0, 0, 512, 384);
-    ctx.fillStyle = '#7dffa1';
-    ctx.shadowColor = '#7dffa1';
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
     ctx.shadowBlur = 8;
     ctx.font = '22px Courier New';
     lines.forEach((line, i) => ctx.fillText(line, 24, 44 + i * 30));

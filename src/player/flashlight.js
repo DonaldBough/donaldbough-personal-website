@@ -5,7 +5,7 @@ const INTENSITY = 40;
 
 // A shadow-casting spotlight held slightly to the right of the camera.
 export function createFlashlight(camera) {
-  const light = new THREE.SpotLight(0xfff1d6, 0, 18, 0.38, 0.45, 1.5);
+  const light = new THREE.SpotLight(0xe8f4ff, 0, 18, 0.38, 0.45, 1.5);
   light.position.set(0.25, -0.2, 0.1);
   light.target.position.set(0, 0, -5);
   light.castShadow = true;

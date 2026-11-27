@@ -2,10 +2,12 @@ import * as THREE from 'three/webgpu';
 import { materials, mesh } from '../materials.js';
 import { photoPlaceholderTexture } from '../textures.js';
 import { content } from '../../content.js';
+import { NEON, neonMaterial, halo } from '../neon.js';
 
 const PICTURE_HEIGHT = 0.5;
 const MAT_MARGIN = 0.06;
 const BORDER_MARGIN = 0.1;
+const RIM = 0.012;
 
 // A row of framed photos. The group's origin is the center of the row, flush against a wall.
 // Each frame starts at 4:3 and resizes to its photo's aspect ratio once the image loads.
@@ -40,16 +42,23 @@ export function createPhotoWall() {
   return { object: group, interactables };
 }
 
-// Unit-sized border, mat and picture that setAspect() scales to fit a photo.
+// Unit-sized layers that setAspect() scales to fit a photo, back to front:
+// a cyan backlight halo, a gunmetal border with a thin neon rim, a dark mat, and the picture.
 function createFrame(pictureMaterial) {
   const frame = new THREE.Group();
-  const border = mesh(new THREE.BoxGeometry(1, 1, 0.04), materials.wood);
+  const backlight = halo(1, 1, NEON.cyan, { shape: 'spot', opacity: 0.3 });
+  backlight.position.z = 0.002;
+  const border = mesh(new THREE.BoxGeometry(1, 1, 0.04), materials.gunmetal);
   border.position.z = 0.02;
-  const mat = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0xe8e4d8, roughness: 0.9 }));
-  mat.position.z = 0.0405;
+  const rim = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), neonMaterial(NEON.cyan));
+  rim.position.z = 0.041;
+  const face = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), materials.gunmetal);
+  face.position.z = 0.042;
+  const mat = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshStandardMaterial({ color: 0x0e0f14, roughness: 0.9 }));
+  mat.position.z = 0.043;
   const picture = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), pictureMaterial);
-  picture.position.z = 0.042;
-  frame.add(border, mat, picture);
+  picture.position.z = 0.044;
+  frame.add(backlight, border, rim, face, mat, picture);
 
   frame.setAspect = (aspect) => {
     const w = PICTURE_HEIGHT * aspect;
@@ -57,6 +66,9 @@ function createFrame(pictureMaterial) {
     picture.scale.set(w, h, 1);
     mat.scale.set(w + 2 * MAT_MARGIN, h + 2 * MAT_MARGIN, 1);
     border.scale.set(w + 2 * BORDER_MARGIN, h + 2 * BORDER_MARGIN, 1);
+    rim.scale.copy(border.scale);
+    face.scale.set(w + 2 * (BORDER_MARGIN - RIM), h + 2 * (BORDER_MARGIN - RIM), 1);
+    backlight.scale.set(w + 2 * BORDER_MARGIN + 0.5, h + 2 * BORDER_MARGIN + 0.5, 1);
   };
   return frame;
 }

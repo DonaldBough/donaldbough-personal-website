@@ -2,7 +2,7 @@
 
 Fun personal website where I'm experimenting working with GPUs through shaders, WebGL, and ThreeJS on a video game like experience in your browser.
 
-The site is a first-person laboratory ("Lab 07") inspired by GoldenEye 007 and Resident Evil, built with vanilla JavaScript and [Three.js](https://threejs.org/) using the `WebGPURenderer` (it falls back to WebGL2 automatically when WebGPU isn't available).
+The site is a neon, magenta-and-cyan cyberpunk first-person laboratory ("Lab 07"), built with vanilla JavaScript and [Three.js](https://threejs.org/) using the `WebGPURenderer` (it falls back to WebGL2 automatically when WebGPU isn't available).
 
 No bundler, no build step, no backend: Three.js is loaded from a CDN through an [import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) in `index.html`.
 
@@ -51,7 +51,8 @@ src/
   world/
     lab.js            Assembles the room, lighting and props (the layout lives here)
     room.js           Floor, walls, ceiling, pipes and the door
-    lighting.js       Fluorescent fixtures (one flickers), emergency light, fog, environment
+    lighting.js       Magenta and cyan ceiling panels (one flickers), door pulse light, fog, environment
+    neon.js           Neon tubes and additive glow halos (a cheap stand-in for bloom)
     textures.js       Procedural canvas textures (tiles, paint, screens, signs, photo placeholders)
     materials.js      Shared materials and a small mesh helper
     props/            One file per object: terminals, guitar, photos, Oscar, lab bench, shelf

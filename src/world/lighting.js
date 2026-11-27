@@ -1,7 +1,8 @@
 import * as THREE from 'three/webgpu';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { ROOM } from './room.js';
-import { mesh } from './materials.js';
+import { materials, mesh } from './materials.js';
+import { NEON } from './neon.js';
 import { quality } from '../core/device.js';
 
 export function createLighting(scene, renderer) {
@@ -10,54 +11,55 @@ export function createLighting(scene, renderer) {
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environmentIntensity = 0.08;
 
-  scene.background = new THREE.Color(0x020403);
-  scene.fog = new THREE.FogExp2(0x030605, 0.045);
+  scene.background = new THREE.Color(0x05030a);
+  scene.fog = new THREE.FogExp2(0x0b0716, 0.04);
 
-  scene.add(new THREE.HemisphereLight(0x9fb8aa, 0x1a1410, 0.25));
+  scene.add(new THREE.HemisphereLight(0x5a6cff, 0x200a24, 0.3));
 
+  // Ceiling panels alternate magenta and cyan.
   const fixtures = [
-    [-3, -2.5],
-    [3, -2.5],
-    [-3, 2.5],
-    [3, 2.5],
-  ].map(([x, z]) => createFixture(scene, x, z));
+    [-3, -2.5, NEON.magenta],
+    [3, -2.5, NEON.cyan],
+    [-3, 2.5, NEON.cyan],
+    [3, 2.5, NEON.magenta],
+  ].map(([x, z, color]) => createFixture(scene, x, z, color));
 
-  // One fixture flickers, because every good horror lab has one.
+  // One panel still flickers occasionally, a nod to the old horror lab.
   const flickering = fixtures[3];
   let flickerTimer = 0;
 
-  const emergency = createEmergencyLight(scene, 3, ROOM.depth / 2 - 0.15);
+  const doorPulse = createPulseLight(scene, 3, ROOM.depth / 2 - 0.15);
 
   function update(dt, elapsed) {
     flickerTimer -= dt;
     if (flickerTimer <= 0) {
       const off = Math.random() < 0.35;
       flickering.setOn(off ? Math.random() * 0.15 : 1);
-      flickerTimer = off ? Math.random() * 0.12 : Math.random() * 2.5;
+      flickerTimer = off ? Math.random() * 0.12 : 1 + Math.random() * 6;
     }
-    emergency.update(elapsed);
+    doorPulse.update(elapsed);
   }
 
   return { update };
 }
 
-function createFixture(scene, x, z) {
+function createFixture(scene, x, z, color) {
   const { height } = ROOM;
-  const intensity = 18;
+  const intensity = 22;
 
   const housing = mesh(
     new THREE.BoxGeometry(1.3, 0.08, 0.35),
-    new THREE.MeshStandardMaterial({ color: 0xb8b8b0, roughness: 0.5, metalness: 0.4 }),
+    materials.gunmetal,
     { castShadow: false },
   );
   housing.position.set(x, height - 0.04, z);
 
-  const panelMaterial = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: 0xe8fff2, emissiveIntensity: 2.5 });
+  const panelMaterial = new THREE.MeshStandardMaterial({ color: 0x000000, emissive: color, emissiveIntensity: 2.5 });
   const panel = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.28), panelMaterial);
   panel.rotation.x = Math.PI / 2;
   panel.position.set(x, height - 0.081, z);
 
-  const light = new THREE.SpotLight(0xe6fff0, intensity, 12, 1.25, 0.8, 1.6);
+  const light = new THREE.SpotLight(color, intensity, 12, 1.25, 0.8, 1.6);
   light.position.set(x, height - 0.12, z);
   light.target.position.set(x, 0, z);
   light.castShadow = true;
@@ -75,19 +77,20 @@ function createFixture(scene, x, z) {
   };
 }
 
-function createEmergencyLight(scene, x, z) {
-  const material = new THREE.MeshStandardMaterial({ color: 0x200000, emissive: 0xff1a0a, emissiveIntensity: 2 });
+// A slow magenta pulse above the door.
+function createPulseLight(scene, x, z) {
+  const material = new THREE.MeshStandardMaterial({ color: 0x100010, emissive: NEON.magenta, emissiveIntensity: 2 });
   const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), material);
   bulb.rotation.x = Math.PI / 2;
   bulb.position.set(x, 2.95, z);
 
-  const light = new THREE.PointLight(0xff2010, 1, 5, 2);
+  const light = new THREE.PointLight(NEON.magenta, 1, 5, 2);
   light.position.set(x, 2.9, z - 0.1);
   scene.add(bulb, light);
 
   return {
     update(elapsed) {
-      const pulse = 0.5 + 0.5 * Math.sin(elapsed * 2.5);
+      const pulse = 0.5 + 0.5 * Math.sin(elapsed * 1.2);
       light.intensity = 0.4 + pulse * 2.2;
       material.emissiveIntensity = 0.5 + pulse * 3;
     },

@@ -1,6 +1,7 @@
 import * as THREE from 'three/webgpu';
 import { mesh } from '../materials.js';
 import { content } from '../../content.js';
+import { NEON, neonMaterial } from '../neon.js';
 
 // Oscar the miniature dachshund, built from primitives, standing on his bed.
 // He breathes, wags his tail, and turns his head to watch you. Interacting makes him happy.
@@ -57,6 +58,12 @@ export function createOscar() {
     ear.rotation.z = side * 0.15;
     head.add(eye, ear);
   }
+
+  // Glowing collar around the neck, tilted to match it.
+  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.01, 8, 24), neonMaterial(NEON.cyan));
+  collar.position.set(0, 0.205, 0.175);
+  collar.rotation.x = -Math.PI / 4;
+  dog.add(collar);
 
   // Tail pivots at its base so it can wag.
   const tail = new THREE.Group();
