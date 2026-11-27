@@ -13,7 +13,7 @@ export function createOscar() {
   dog.position.y = 0.05;
   group.add(dog);
 
-  const coat = new THREE.MeshStandardMaterial({ color: 0x8a4a22, roughness: 0.75 });
+  const coat = new THREE.MeshStandardMaterial({ color: 0xb0743c, roughness: 0.8 });
   const dark = new THREE.MeshStandardMaterial({ color: 0x0c0806, roughness: 0.3 });
 
   // Long sausage body.

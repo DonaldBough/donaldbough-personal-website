@@ -58,9 +58,8 @@ export const content = {
     body: 'ACCESS DENIED. More rooms are under construction.',
   },
   photos: [
-    { title: 'Photo', body: 'A personal photo. Drop images into assets/photos and list them in src/content.js.', src: null },
-    { title: 'Photo', body: 'Another memory waiting to be hung on the wall.', src: null },
-    { title: 'Photo', body: 'Placeholder for a favorite trip.', src: null },
-    { title: 'Photo', body: 'Placeholder for Oscar being photogenic.', src: null },
+    { title: 'Hong Kong', body: 'Victoria Harbour, Hong Kong.', src: 'assets/photos/hong-kong.jpg' },
+    { title: 'Oscar, Off Duty', body: 'Oscar on his blanket, surrounded by his toys.', src: 'assets/photos/oscar.jpg' },
+    { title: 'Splash Mountain', body: 'Splash Mountain at Disneyland with friends.', src: 'assets/photos/splash-mountain.jpg' },
   ],
 };

@@ -75,7 +75,7 @@ Then place it in `src/world/lab.js`.
 
 ### Adding photos
 
-Put images in `assets/photos/` and set the `src` of an entry in `content.photos` in `src/content.js`, e.g. `src: 'assets/photos/oscar.jpg'`.
+Put images in `assets/photos/` and set the `src` of an entry in `content.photos` in `src/content.js`, e.g. `src: 'assets/photos/oscar.jpg'`. Each frame resizes to its photo's aspect ratio. Before committing, shrink photos and strip their metadata (phone photos carry GPS location), e.g. `convert in.jpeg -auto-orient -resize 1024x1024\> -strip -quality 82 assets/photos/out.jpg`.
 
 ## Roadmap
 
