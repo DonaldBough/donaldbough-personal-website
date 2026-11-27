@@ -84,6 +84,14 @@ Then place it in `src/world/lab.js`.
 
 Put images in `assets/photos/` and set the `src` of an entry in `content.photos` in `src/content.js`, e.g. `src: 'assets/photos/oscar.jpg'`. Each frame resizes to its photo's aspect ratio. Before committing, shrink photos and strip their metadata (phone photos carry GPS location), e.g. `convert in.jpeg -auto-orient -resize 1024x1024\> -strip -quality 82 assets/photos/out.jpg`.
 
+## Progress
+
+### [Milestone 1: Cyberpunk lab](docs/milestones/01-cyberpunk-lab/README.md)
+
+![Walkthrough of the milestone 1 cyberpunk lab](docs/milestones/01-cyberpunk-lab/walkthrough.webp)
+
+More clips and screenshots, including the phone controls, are on the [milestone 1 page](docs/milestones/01-cyberpunk-lab/README.md).
+
 ## Roadmap
 
 - **Graphics:** real models (glTF), better materials, post-processing (bloom, film grain, vignette).
