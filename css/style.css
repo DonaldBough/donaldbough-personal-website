@@ -1,0 +1,237 @@
+:root {
+  --hud-accent: #19e6ff;
+  --panel-bg: rgba(8, 14, 12, 0.85);
+  --font: "Courier New", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  background: #000;
+  color: var(--hud-accent);
+  font-family: var(--font);
+}
+
+#app canvas {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- HUD ---------- */
+
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+#prompt {
+  position: absolute;
+  top: calc(50% + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  background: var(--panel-bg);
+  border: 1px solid var(--hud-accent);
+  letter-spacing: 0.05em;
+}
+
+#stats {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 12px;
+  opacity: 0.7;
+  white-space: pre;
+}
+
+/* ---------- Inspect panel ---------- */
+
+#inspect {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: min(560px, 90vw);
+  padding: 18px 22px;
+  background: var(--panel-bg);
+  border: 1px solid var(--hud-accent);
+  box-shadow: 0 0 24px rgba(25, 230, 255, 0.15);
+}
+
+#inspect h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+#inspect p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+  color: #e0f7ff;
+}
+
+#inspect .hint {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* ---------- Start / pause overlay ---------- */
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.92));
+}
+
+#overlay h1 {
+  margin: 0;
+  font-size: clamp(40px, 8vw, 84px);
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 18px rgba(25, 230, 255, 0.5);
+}
+
+#overlay .subtitle {
+  margin: 0 0 24px;
+  opacity: 0.75;
+  letter-spacing: 0.15em;
+}
+
+#overlay button {
+  padding: 12px 28px;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  color: var(--hud-accent);
+  background: transparent;
+  border: 1px solid var(--hud-accent);
+  cursor: pointer;
+}
+
+#overlay button:hover {
+  background: rgba(25, 230, 255, 0.12);
+}
+
+#overlay button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
+#overlay .controls {
+  margin-top: 24px;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+#status {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+/* ---------- Touch controls (phones & tablets) ---------- */
+
+#touch-ui {
+  position: fixed;
+  inset: 0;
+  touch-action: none;
+}
+
+#joystick {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(25, 230, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(8, 14, 12, 0.3);
+  pointer-events: none;
+}
+
+#joystick-knob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 46px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(25, 230, 255, 0.45);
+}
+
+#touch-ui button {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  font: inherit;
+  font-size: 26px;
+  color: var(--hud-accent);
+  background: var(--panel-bg);
+  border: 1px solid rgba(25, 230, 255, 0.5);
+  border-radius: 50%;
+  touch-action: none;
+}
+
+#btn-interact {
+  right: calc(24px + env(safe-area-inset-right));
+  bottom: calc(28px + env(safe-area-inset-bottom));
+  opacity: 0.15;
+  transition: opacity 0.15s;
+}
+
+#btn-interact.available {
+  opacity: 1;
+  border-color: var(--hud-accent);
+  box-shadow: 0 0 16px rgba(25, 230, 255, 0.5);
+}
+
+#btn-flashlight {
+  right: calc(104px + env(safe-area-inset-right));
+  bottom: calc(28px + env(safe-area-inset-bottom));
+}
+
+#btn-pause {
+  top: calc(12px + env(safe-area-inset-top));
+  right: calc(12px + env(safe-area-inset-right));
+  width: 44px !important;
+  height: 44px !important;
+  font-size: 16px !important;
+}
+
+/* The inspect panel sits above the touch buttons on small screens. */
+@media (pointer: coarse) {
+  #inspect {
+    bottom: calc(110px + env(safe-area-inset-bottom));
+  }
+}
