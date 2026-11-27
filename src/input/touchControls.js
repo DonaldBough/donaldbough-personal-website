@@ -81,10 +81,10 @@ export class TouchControls {
   }
 }
 
+// Buttons fire on click (touch release) because iOS only unlocks audio from a completed tap.
+// Stopping pointerdown keeps the press from also starting a move or look drag.
 function bindButton(id, callback) {
-  document.getElementById(id).addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    callback();
-  });
+  const button = document.getElementById(id);
+  button.addEventListener('pointerdown', (e) => e.stopPropagation());
+  button.addEventListener('click', callback);
 }
