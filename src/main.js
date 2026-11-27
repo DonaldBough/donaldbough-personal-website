@@ -31,7 +31,7 @@ async function start() {
   const player = new Player(camera, renderer.domElement, lab);
   player.spawn(lab.spawn);
   const flashlight = createFlashlight(camera);
-  const interactions = new Interactions(camera, lab.interactables, hud);
+  const interactions = new Interactions(camera, scene, lab.interactables, hud);
 
   // ---------- Input & UI wiring ----------
 
