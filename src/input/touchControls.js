@@ -62,6 +62,7 @@ export class TouchControls {
         startX: e.clientX,
         startY: e.clientY,
         startTime: performance.now(),
+        maxMove: 0, // farthest the finger got from its start, so a drag that returns isn't a tap
       };
     }
   }
@@ -74,6 +75,8 @@ export class TouchControls {
       this.move.set(offset.x / JOYSTICK_RADIUS, -offset.y / JOYSTICK_RADIUS);
     } else if (this.lookTouch?.id === e.pointerId) {
       this.onLook(e.clientX - this.lookTouch.x, e.clientY - this.lookTouch.y);
+      const fromStart = Math.hypot(e.clientX - this.lookTouch.startX, e.clientY - this.lookTouch.startY);
+      this.lookTouch.maxMove = Math.max(this.lookTouch.maxMove, fromStart);
       this.lookTouch.x = e.clientX;
       this.lookTouch.y = e.clientY;
     }
@@ -88,7 +91,7 @@ export class TouchControls {
       const shouldInteract = e.type === 'pointerup'
         && this.lookTouch.startX >= window.innerWidth / 2
         && performance.now() - this.lookTouch.startTime <= 250
-        && Math.hypot(e.clientX - this.lookTouch.startX, e.clientY - this.lookTouch.startY) < 10;
+        && Math.max(this.lookTouch.maxMove, Math.hypot(e.clientX - this.lookTouch.startX, e.clientY - this.lookTouch.startY)) < 10;
       this.lookTouch = null;
       if (shouldInteract) this.onInteract();
     }
