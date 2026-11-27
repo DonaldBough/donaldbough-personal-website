@@ -1,0 +1,66 @@
+// All of the personal text shown in the lab lives here, so it is easy to edit
+// (and, later on, easy to hand to an in-browser LLM as a knowledge base).
+
+export const content = {
+  terminal: {
+    title: 'Lab Terminal',
+    body: 'DONALD BOUGH — software engineer. This lab is my playground for 3D graphics, GPU programming and on-device AI. More terminals coming online soon.',
+    screen: [
+      'LAB 07 // RESEARCH TERMINAL',
+      '',
+      '> whoami',
+      'donald bough',
+      '> ls ./interests',
+      'graphics  gpu  ai  guitar',
+      '> status',
+      'WebGPU ........ ONLINE',
+      'WebLLM ........ PENDING',
+    ],
+  },
+  terminalGpu: {
+    title: 'GPU Diagnostics',
+    body: 'Reserved for upcoming experiments: compute-shader dust particles and volumetric flashlight beams written in WGSL / TSL.',
+    screen: [
+      'GPU DIAGNOSTICS',
+      '',
+      '> compute.dust ...... TODO',
+      '> volumetrics ....... TODO',
+      '> shadows ........... OK',
+      '> renderer .......... {backend}',
+    ],
+  },
+  terminalAi: {
+    title: 'AI Core',
+    body: 'Soon this terminal will run a language model directly in your browser with WebLLM. Ask it about me, or ask it what Oscar is up to.',
+    screen: [
+      'AI CORE v0.0.1',
+      '',
+      '> load model',
+      'ERR: model not installed',
+      '> eta',
+      'soon(tm)',
+    ],
+  },
+  guitar: {
+    title: 'Guitar',
+    body: 'My guitar. Press E again to strum it.',
+  },
+  oscar: {
+    title: 'Oscar',
+    body: 'Oscar, my miniature dachshund and Head of Lab Security. Very good boy. Will accept treats as payment.',
+  },
+  labBench: {
+    title: 'Lab Bench',
+    body: 'Assorted glassware. Most experiments here are shader experiments, so nothing should explode. Probably.',
+  },
+  door: {
+    title: 'Sealed Door',
+    body: 'ACCESS DENIED. More rooms are under construction.',
+  },
+  photos: [
+    { title: 'Photo', body: 'A personal photo. Drop images into assets/photos and list them in src/content.js.', src: null },
+    { title: 'Photo', body: 'Another memory waiting to be hung on the wall.', src: null },
+    { title: 'Photo', body: 'Placeholder for a favorite trip.', src: null },
+    { title: 'Photo', body: 'Placeholder for Oscar being photogenic.', src: null },
+  ],
+};

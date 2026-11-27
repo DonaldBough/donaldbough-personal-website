@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Donald Bough — Lab 07</title>
+    <meta name="description" content="Donald Bough's personal website: an explorable 3D laboratory built with Three.js and WebGPU." />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Three.js is loaded straight from a CDN via an import map: no bundler needed. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.webgpu.js",
+          "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.webgpu.js",
+          "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.tsl.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <div id="hud">
+      <div id="crosshair"></div>
+      <div id="prompt" class="hidden"></div>
+      <div id="stats"></div>
+    </div>
+
+    <div id="inspect" class="hidden">
+      <h2 id="inspect-title"></h2>
+      <p id="inspect-body"></p>
+      <span class="hint">[E] close</span>
+    </div>
+
+    <div id="overlay">
+      <h1>LAB 07</h1>
+      <p class="subtitle">Donald Bough — Research Facility</p>
+      <button id="start">Click to enter</button>
+      <p class="controls">
+        WASD move &middot; Mouse look &middot; Shift sprint &middot; E interact &middot; F flashlight &middot; Esc pause
+      </p>
+      <p id="status"></p>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

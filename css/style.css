@@ -1,0 +1,156 @@
+:root {
+  --hud-green: #8dffb0;
+  --panel-bg: rgba(8, 14, 12, 0.85);
+  --font: "Courier New", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: var(--hud-green);
+  font-family: var(--font);
+}
+
+#app canvas {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- HUD ---------- */
+
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+#prompt {
+  position: absolute;
+  top: calc(50% + 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  background: var(--panel-bg);
+  border: 1px solid var(--hud-green);
+  letter-spacing: 0.05em;
+}
+
+#stats {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 12px;
+  opacity: 0.7;
+  white-space: pre;
+}
+
+/* ---------- Inspect panel ---------- */
+
+#inspect {
+  position: fixed;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  width: min(560px, 90vw);
+  padding: 18px 22px;
+  background: var(--panel-bg);
+  border: 1px solid var(--hud-green);
+  box-shadow: 0 0 24px rgba(141, 255, 176, 0.15);
+}
+
+#inspect h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+#inspect p {
+  margin: 0 0 10px;
+  line-height: 1.5;
+  color: #d8f5e2;
+}
+
+#inspect .hint {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* ---------- Start / pause overlay ---------- */
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.92));
+}
+
+#overlay h1 {
+  margin: 0;
+  font-size: clamp(40px, 8vw, 84px);
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 18px rgba(141, 255, 176, 0.5);
+}
+
+#overlay .subtitle {
+  margin: 0 0 24px;
+  opacity: 0.75;
+  letter-spacing: 0.15em;
+}
+
+#overlay button {
+  padding: 12px 28px;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  color: var(--hud-green);
+  background: transparent;
+  border: 1px solid var(--hud-green);
+  cursor: pointer;
+}
+
+#overlay button:hover {
+  background: rgba(141, 255, 176, 0.12);
+}
+
+#overlay button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
+#overlay .controls {
+  margin-top: 24px;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+#status {
+  font-size: 12px;
+  opacity: 0.5;
+}
