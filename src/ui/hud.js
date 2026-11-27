@@ -1,6 +1,7 @@
 // Thin wrapper around the HTML overlay elements defined in index.html.
 export class Hud {
-  constructor() {
+  constructor({ touch = false } = {}) {
+    this.touch = touch;
     this.prompt = document.getElementById('prompt');
     this.stats = document.getElementById('stats');
     this.inspect = document.getElementById('inspect');
@@ -13,6 +14,12 @@ export class Hud {
     this.frames = 0;
     this.statsTimer = 0;
     this.startButton.disabled = true;
+
+    if (touch) {
+      this.startButton.textContent = 'Tap to enter';
+      document.getElementById('controls-help').textContent = 'Left thumb move · Right thumb look · Buttons interact, flashlight & pause';
+      this.inspect.querySelector('.hint').textContent = 'Tap the hand to close';
+    }
   }
 
   setStatus(text) {
@@ -29,7 +36,7 @@ export class Hud {
 
   setOverlayVisible(visible) {
     this.overlay.classList.toggle('hidden', !visible);
-    this.startButton.textContent = 'Click to resume';
+    this.startButton.textContent = this.touch ? 'Tap to resume' : 'Click to resume';
   }
 
   showPrompt(text) {

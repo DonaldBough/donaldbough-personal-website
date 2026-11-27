@@ -29,6 +29,8 @@ Then open <http://localhost:8080>. Use a recent Chrome or Edge for WebGPU; the r
 | F | Toggle flashlight |
 | Esc | Pause |
 
+On phones and tablets: drag on the left half of the screen to move, drag on the right half to look, and use the on-screen buttons to interact, toggle the flashlight and pause. Phones render at a lower resolution with smaller shadow maps to keep the frame rate up.
+
 ## Project structure
 
 ```
@@ -38,8 +40,10 @@ src/
   main.js             Entry point: creates everything and runs the frame loop
   content.js          All personal text shown in the lab (edit me!)
   core/renderer.js    WebGPURenderer setup and resizing
+  core/device.js      Touch-device detection and per-device quality settings
+  input/touchControls.js  On-screen joystick, drag-to-look and buttons for touch devices
   player/
-    player.js         Pointer-lock mouse look, WASD movement, collisions, head bob
+    player.js         Pointer-lock / touch look, WASD / joystick movement, collisions, head bob
     flashlight.js     Camera-mounted, shadow-casting spotlight
   interaction/
     interactions.js   Raycast from the crosshair and "[E] interact" handling

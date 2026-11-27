@@ -2,6 +2,7 @@ import * as THREE from 'three/webgpu';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { ROOM } from './room.js';
 import { mesh } from './materials.js';
+import { quality } from '../core/device.js';
 
 export function createLighting(scene, renderer) {
   // A faint image-based light so metals and glossy surfaces have something to reflect.
@@ -60,7 +61,7 @@ function createFixture(scene, x, z) {
   light.position.set(x, height - 0.12, z);
   light.target.position.set(x, 0, z);
   light.castShadow = true;
-  light.shadow.mapSize.set(1024, 1024);
+  light.shadow.mapSize.setScalar(quality.shadowMapSize);
   light.shadow.bias = -0.0005;
   light.shadow.radius = 4;
 

@@ -5,8 +5,10 @@ const EYE_HEIGHT = 1.65;
 const RADIUS = 0.3;
 const WALK_SPEED = 2.2;
 const SPRINT_SPEED = 4.0;
+const TOUCH_LOOK_SPEED = 0.004; // radians per pixel dragged
 
-// First-person movement: pointer-lock mouse look, WASD, sprint, simple collisions and head bob.
+// First-person movement: pointer-lock mouse look (desktop) or touch look (mobile),
+// WASD or a touch joystick, sprint, simple collisions and head bob.
 export class Player {
   constructor(camera, domElement, { bounds, colliders }) {
     this.camera = camera;
@@ -16,6 +18,9 @@ export class Player {
     this.velocity = new THREE.Vector2(); // x = strafe, y = forward (meters/second)
     this.keys = new Set();
     this.bobPhase = 0;
+    this.touchActive = false; // pointer lock isn't available on iOS, so touch mode tracks this itself
+    this.touchMove = new THREE.Vector2();
+    this.euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
     window.addEventListener('keydown', (e) => this.keys.add(e.code));
     window.addEventListener('keyup', (e) => this.keys.delete(e.code));
@@ -31,18 +36,27 @@ export class Player {
     this.controls.lock();
   }
 
-  get isLocked() {
-    return this.controls.isLocked;
+  get isActive() {
+    return this.controls.isLocked || this.touchActive;
+  }
+
+  // Rotate the view by a drag of (dx, dy) pixels.
+  look(dx, dy) {
+    this.euler.setFromQuaternion(this.camera.quaternion);
+    this.euler.y -= dx * TOUCH_LOOK_SPEED;
+    this.euler.x -= dy * TOUCH_LOOK_SPEED;
+    this.euler.x = THREE.MathUtils.clamp(this.euler.x, -Math.PI / 2 + 0.01, Math.PI / 2 - 0.01);
+    this.camera.quaternion.setFromEuler(this.euler);
   }
 
   update(dt) {
-    if (!this.controls.isLocked) return;
+    if (!this.isActive) return;
 
     const k = this.keys;
     const input = new THREE.Vector2(
       (k.has('KeyD') ? 1 : 0) - (k.has('KeyA') ? 1 : 0),
       (k.has('KeyW') ? 1 : 0) - (k.has('KeyS') ? 1 : 0),
-    );
+    ).add(this.touchMove);
     if (input.lengthSq() > 1) input.normalize();
     const speed = k.has('ShiftLeft') || k.has('ShiftRight') ? SPRINT_SPEED : WALK_SPEED;
 

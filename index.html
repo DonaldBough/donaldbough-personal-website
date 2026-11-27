@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <title>Donald Bough — Lab 07</title>
     <meta name="description" content="Donald Bough's personal website: an explorable 3D laboratory built with Three.js and WebGPU." />
     <link rel="icon" href="data:," />
@@ -35,11 +35,18 @@
       <span class="hint">[E] close</span>
     </div>
 
+    <div id="touch-ui" class="hidden">
+      <div id="joystick" class="hidden"><div id="joystick-knob"></div></div>
+      <button id="btn-pause" aria-label="Pause">II</button>
+      <button id="btn-flashlight" aria-label="Flashlight">&#128294;</button>
+      <button id="btn-interact" aria-label="Interact">&#9995;</button>
+    </div>
+
     <div id="overlay">
       <h1>LAB 07</h1>
       <p class="subtitle">Donald Bough — Research Facility</p>
       <button id="start">Click to enter</button>
-      <p class="controls">
+      <p class="controls" id="controls-help">
         WASD move &middot; Mouse look &middot; Shift sprint &middot; E interact &middot; F flashlight &middot; Esc pause
       </p>
       <p id="status"></p>

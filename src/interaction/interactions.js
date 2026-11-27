@@ -24,7 +24,7 @@ export class Interactions {
     const hit = this.raycaster.intersectObjects(this.targets, true)[0];
     this.current = hit ? this.findInteractable(hit.object) : null;
 
-    if (this.current) this.hud.showPrompt(`[E] ${this.current.title}`);
+    if (this.current) this.hud.showPrompt(this.hud.touch ? this.current.title : `[E] ${this.current.title}`);
     else this.hud.hidePrompt();
   }
 

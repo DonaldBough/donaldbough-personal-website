@@ -1,4 +1,5 @@
 import * as THREE from 'three/webgpu';
+import { quality } from '../core/device.js';
 
 const INTENSITY = 40;
 
@@ -8,7 +9,7 @@ export function createFlashlight(camera) {
   light.position.set(0.25, -0.2, 0.1);
   light.target.position.set(0, 0, -5);
   light.castShadow = true;
-  light.shadow.mapSize.set(1024, 1024);
+  light.shadow.mapSize.setScalar(quality.shadowMapSize);
   light.shadow.camera.near = 0.1;
   light.shadow.bias = -0.0005;
   camera.add(light, light.target);
