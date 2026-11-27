@@ -9,6 +9,7 @@ export async function createRenderer(container) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
+  // PCF averages several shadow-map samples at edges, making shadows soft instead of jagged.
   renderer.shadowMap.type = THREE.PCFShadowMap;
 
   container.appendChild(renderer.domElement);

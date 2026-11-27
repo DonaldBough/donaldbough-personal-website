@@ -3,9 +3,9 @@ import * as THREE from 'three/webgpu';
 const REACH = 2.5;
 const SCREEN_CENTER = new THREE.Vector2(0, 0);
 
-// Finds what the player is looking at and handles "E to interact".
-// An interactable is { object, title, body, onInteract? }.
-// The ray is cast against the whole scene so walls and other props block what's behind them.
+// Each frame, one ray goes from the camera through the crosshair; intersectObject(scene, true) returns every hit within REACH, nearest first.
+// We take the nearest mesh and walk its parents until byObject finds a registered root (title/body), rather than testing each target.
+// A wall or nearer object wins. interact() is called by E, the hand button, or a right-half tap.
 export class Interactions {
   constructor(camera, scene, interactables, hud) {
     this.camera = camera;

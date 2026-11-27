@@ -4,7 +4,7 @@ Fun personal website where I'm experimenting working with GPUs through shaders, 
 
 The site is a neon, magenta-and-cyan cyberpunk first-person laboratory ("Lab 07"), built with vanilla JavaScript and [Three.js](https://threejs.org/) using the `WebGPURenderer` (it falls back to WebGL2 automatically when WebGPU isn't available).
 
-No bundler, no build step, no backend: Three.js is loaded from a CDN through an [import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) in `index.html`.
+No bundler, no build step, no backend: Three.js r187 is vendored unmodified in `vendor/three/` under the MIT license and loaded through an [import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script/type/importmap) in `index.html`. To upgrade, download the `three` npm tarball and replace the files in `vendor/three/` that the import map and addons use.
 
 ## Running locally
 
@@ -56,8 +56,14 @@ src/
     textures.js       Procedural canvas textures (tiles, paint, screens, signs, photo placeholders)
     materials.js      Shared materials and a small mesh helper
     props/            One file per object: terminals, guitar, photos, Oscar, lab bench, shelf
-assets/               Photos, models and audio (see assets/README.md)
+assets/               Photos, models and audio
 ```
+
+### Assets
+
+- `photos/` contains the photos referenced by `src/content.js`.
+- `models/` is for future glTF models.
+- `audio/` is for future sounds.
 
 ### Adding a prop
 

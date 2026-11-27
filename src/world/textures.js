@@ -11,6 +11,8 @@ function createCanvas(width, height = width) {
 }
 
 function toTexture(canvas, { repeat = [1, 1], color = true } = {}) {
+  // This wraps the canvas as a GPU texture; RepeatWrapping and repeat tile it, and anisotropy keeps it sharp at grazing angles.
+  // SRGBColorSpace marks color data so lighting maths uses linear space; leave it off for data maps such as roughness or bump.
   const texture = new THREE.CanvasTexture(canvas);
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(repeat[0], repeat[1]);

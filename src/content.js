@@ -43,7 +43,7 @@ export const content = {
   },
   guitar: {
     title: 'Guitar',
-    body: 'My guitar. Press E again to strum it.',
+    body: 'My guitar. It strums an E major chord every time you interact with it.',
   },
   oscar: {
     title: 'Oscar',

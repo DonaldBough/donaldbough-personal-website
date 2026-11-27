@@ -133,8 +133,11 @@ function pluck(ctx, frequency, duration = 3) {
 }
 
 function strum() {
+  // iOS Safari can mute audio in silent mode; playback opts in, and resume wakes an interrupted context.
+  if (navigator.audioSession) navigator.audioSession.type = 'playback';
   audioContext ??= new AudioContext();
   const ctx = audioContext;
+  if (ctx.state !== 'running') ctx.resume();
   const chord = [82.41, 123.47, 164.81, 207.65, 246.94, 329.63]; // E major
   const gain = ctx.createGain();
   gain.gain.value = 0.25;

@@ -1,6 +1,7 @@
 import * as THREE from 'three/webgpu';
 
-// Shared materials reused across props. Reusing materials keeps GPU pipelines to a minimum.
+// A material describes how a surface reacts to light (color, roughness, metalness, emissive); textures can drive those values per pixel.
+// One material can use several textures, such as map and emissiveMap on the floor.
 export const materials = {
   paintedMetal: new THREE.MeshStandardMaterial({ color: 0x3a3f4a, roughness: 0.55, metalness: 0.6 }),
   darkMetal: new THREE.MeshStandardMaterial({ color: 0x23272a, roughness: 0.4, metalness: 0.8 }),

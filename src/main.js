@@ -77,6 +77,8 @@ async function start() {
 
   function frame(timestamp) {
     timer.update(timestamp);
+    // dt is seconds since the last frame; movement and animations scale by it to keep speed frame-rate independent.
+    // Clamping to 0.1 s stops a long pause (like switching tabs) from making the player jump through walls.
     const dt = Math.min(timer.getDelta(), 0.1);
     const elapsed = timer.getElapsed();
 

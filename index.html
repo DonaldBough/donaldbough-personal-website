@@ -3,19 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <title>Donald Bough — Lab 07</title>
+    <title>Donald Bough</title>
     <meta name="description" content="Donald Bough's personal website: an explorable 3D laboratory built with Three.js and WebGPU." />
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="css/style.css" />
 
-    <!-- Three.js is loaded straight from a CDN via an import map: no bundler needed. -->
     <script type="importmap">
       {
         "imports": {
-          "three": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.webgpu.js",
-          "three/webgpu": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.webgpu.js",
-          "three/tsl": "https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.tsl.js",
-          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"
+          "three": "./vendor/three/build/three.webgpu.js",
+          "three/webgpu": "./vendor/three/build/three.webgpu.js",
+          "three/tsl": "./vendor/three/build/three.tsl.js",
+          "three/addons/": "./vendor/three/examples/jsm/"
         }
       }
     </script>

@@ -206,7 +206,8 @@ body {
 #btn-interact {
   right: calc(24px + env(safe-area-inset-right));
   bottom: calc(28px + env(safe-area-inset-bottom));
-  opacity: 0.45;
+  opacity: 0.15;
+  transition: opacity 0.15s;
 }
 
 #btn-interact.available {

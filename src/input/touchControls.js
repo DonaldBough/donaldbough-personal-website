@@ -5,18 +5,20 @@ const JOYSTICK_RADIUS = 50; // pixels
 // On-screen controls for phones and tablets:
 // - drag on the left half of the screen to move (a joystick appears under your thumb)
 // - drag on the right half to look around
+// - tap the right half to interact
 // - buttons for interact, flashlight and pause
 export class TouchControls {
   constructor({ onLook, onInteract, onFlashlight, onPause }) {
     this.move = new THREE.Vector2(); // x = strafe, y = forward, each in [-1, 1]
     this.onLook = onLook;
+    this.onInteract = onInteract;
 
     this.root = document.getElementById('touch-ui');
     this.stick = document.getElementById('joystick');
     this.knob = document.getElementById('joystick-knob');
 
     this.moveTouch = null; // { id, x, y } where the joystick was placed
-    this.lookTouch = null; // { id, x, y } last look position
+    this.lookTouch = null; // { id, x, y, startX, startY, startTime } last look position and tap origin
 
     this.root.addEventListener('pointerdown', (e) => this.onPointerDown(e));
     this.root.addEventListener('pointermove', (e) => this.onPointerMove(e));
@@ -53,7 +55,14 @@ export class TouchControls {
       this.stick.classList.remove('hidden');
       this.knob.style.transform = 'translate(-50%, -50%)';
     } else if (!this.lookTouch) {
-      this.lookTouch = { id: e.pointerId, x: e.clientX, y: e.clientY };
+      this.lookTouch = {
+        id: e.pointerId,
+        x: e.clientX,
+        y: e.clientY,
+        startX: e.clientX,
+        startY: e.clientY,
+        startTime: performance.now(),
+      };
     }
   }
 
@@ -76,7 +85,12 @@ export class TouchControls {
       this.move.set(0, 0);
       this.stick.classList.add('hidden');
     } else if (this.lookTouch?.id === e.pointerId) {
+      const shouldInteract = e.type === 'pointerup'
+        && this.lookTouch.startX >= window.innerWidth / 2
+        && performance.now() - this.lookTouch.startTime <= 250
+        && Math.hypot(e.clientX - this.lookTouch.startX, e.clientY - this.lookTouch.startY) < 10;
       this.lookTouch = null;
+      if (shouldInteract) this.onInteract();
     }
   }
 }

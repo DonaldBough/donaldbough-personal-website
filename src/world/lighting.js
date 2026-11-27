@@ -6,7 +6,7 @@ import { NEON } from './neon.js';
 import { quality } from '../core/device.js';
 
 export function createLighting(scene, renderer) {
-  // A faint image-based light so metals and glossy surfaces have something to reflect.
+  // PMREM prefilters RoomEnvironment into blurred levels for roughness: glossy surfaces reflect sharply, rough ones blur.
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environmentIntensity = 0.08;
@@ -90,6 +90,9 @@ function createPulseLight(scene, x, z) {
 
   return {
     update(elapsed) {
+      // pulse rises 0→1→0 on a sine wave about every 5.2 seconds.
+      // PointLight intensity is candela with no 1.0 ceiling and lights surfaces; emissiveIntensity only brightens the bulb.
+      // Values above 1 are fine; tone mapping compresses them for the screen.
       const pulse = 0.5 + 0.5 * Math.sin(elapsed * 1.2);
       light.intensity = 0.4 + pulse * 2.2;
       material.emissiveIntensity = 0.5 + pulse * 3;

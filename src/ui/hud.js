@@ -18,7 +18,7 @@ export class Hud {
     if (touch) {
       this.startButton.textContent = 'Tap to enter';
       document.getElementById('controls-help').textContent = 'Left thumb move · Right thumb look · Buttons interact, flashlight & pause';
-      this.inspect.querySelector('.hint').textContent = 'Tap the hand to close';
+      this.inspect.querySelector('.hint').textContent = 'Tap to close';
     }
   }
 

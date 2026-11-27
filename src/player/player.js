@@ -20,6 +20,7 @@ export class Player {
     this.bobPhase = 0;
     this.touchActive = false; // pointer lock isn't available on iOS, so touch mode tracks this itself
     this.touchMove = new THREE.Vector2();
+    // Euler stores three angles; YXZ applies yaw before pitch, FPS-style, so the horizon never tilts.
     this.euler = new THREE.Euler(0, 0, 0, 'YXZ');
 
     window.addEventListener('keydown', (e) => this.keys.add(e.code));
