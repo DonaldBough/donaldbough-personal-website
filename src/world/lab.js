@@ -37,7 +37,6 @@ export function createLab(scene, renderer, { backend }) {
 
   function update(dt, elapsed, context) {
     lighting.update(dt, elapsed);
-    room.update(dt, elapsed);
     updatable.forEach((p) => p.update(dt, elapsed, context));
   }
 

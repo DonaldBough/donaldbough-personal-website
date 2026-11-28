@@ -1,7 +1,8 @@
 import * as THREE from 'three/webgpu';
 import { materials, mesh } from './materials.js';
 import { floorTexture, floorGlowTexture, wallTexture, wainscotTexture, ceilingTexture, neonSignTexture } from './textures.js';
-import { NEON, SHOW_FAKE_HALOS, neonStrip, halo } from './neon.js';
+import { NEON, neonStrip, halo } from './neon.js';
+import { createNeonSignMaterial } from './neonMaterial.js';
 import { content } from '../content.js';
 
 // Room dimensions in meters. The origin is the center of the floor.
@@ -54,14 +55,13 @@ export function createRoom() {
   group.add(door);
 
   const sign = createNeonSign('DONALDBOUGH.COM', NEON.magenta);
-  sign.object.position.set(3, 2.8, depth / 2 - 0.02);
-  sign.object.rotation.y = Math.PI;
-  group.add(sign.object);
+  sign.position.set(3, 2.8, depth / 2 - 0.02);
+  sign.rotation.y = Math.PI;
+  group.add(sign);
 
   return {
     object: group,
     interactables: [{ object: door, ...content.door }],
-    update: sign.update,
   };
 }
 
@@ -155,23 +155,11 @@ function createDoor() {
 function createNeonSign(text, color) {
   const group = new THREE.Group();
   const texture = neonSignTexture(text, color);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x000000, map: texture, emissive: 0xffffff, emissiveMap: texture, emissiveIntensity: 1.35, transparent: true,
-  });
+  const material = createNeonSignMaterial(texture);
   const letters = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 0.31), material);
   letters.position.z = 0.01;
   const glow = halo(2.6, 0.7, color, { shape: 'spot', opacity: 0.35 });
   group.add(glow, letters);
 
-  let timer = 0;
-  function update(dt) {
-    timer -= dt;
-    if (timer <= 0) {
-      const dim = Math.random() < 0.3;
-      material.opacity = dim ? 0.25 : 1;
-      glow.visible = SHOW_FAKE_HALOS && !dim;
-      timer = dim ? Math.random() * 0.08 : 2 + Math.random() * 5;
-    }
-  }
-  return { object: group, update };
+  return group;
 }
