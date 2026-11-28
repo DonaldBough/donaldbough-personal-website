@@ -64,6 +64,7 @@ assets/               Photos, models and audio
 - `photos/` contains the photos referenced by `src/content.js`.
 - `models/` is for future glTF models.
 - `audio/` is for future sounds.
+- `social/` holds the link-preview image (`og-image.jpg`, 1200×630), the Apple touch icon and the favicon. The Open Graph and `twitter:` tags in `index.html` use absolute `https://donaldbough.com/` URLs, because link-preview crawlers can't resolve relative ones.
 
 ### Adding a prop
 
