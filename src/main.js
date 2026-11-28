@@ -1,5 +1,6 @@
 import * as THREE from 'three/webgpu';
 import { createRenderer, backendName, handleResize } from './core/renderer.js';
+import { createPost } from './core/post.js';
 import { isTouchDevice } from './core/device.js';
 import { createLab } from './world/lab.js';
 import { Player } from './player/player.js';
@@ -32,6 +33,7 @@ async function start() {
   player.spawn(lab.spawn);
   const flashlight = createFlashlight(camera);
   const interactions = new Interactions(camera, scene, lab.interactables, hud);
+  const { pipeline, scenePass } = createPost(renderer, scene, camera);
 
   // ---------- Input & UI wiring ----------
 
@@ -92,12 +94,12 @@ async function start() {
     interactions.update();
     hud.updateStats(dt, backend);
 
-    renderer.render(scene, camera);
+    pipeline.render();
   }
 
   // Compile shaders up front to avoid a hitch on the first frames.
   hud.setStatus('Compiling shaders…');
-  await renderer.compileAsync(scene, camera);
+  await scenePass.compileAsync(renderer);
   renderer.setAnimationLoop(frame);
   hud.setStatus(`Renderer: ${backend}`);
   hud.setReady();

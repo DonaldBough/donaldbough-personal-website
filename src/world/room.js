@@ -1,7 +1,7 @@
 import * as THREE from 'three/webgpu';
 import { materials, mesh } from './materials.js';
 import { floorTexture, floorGlowTexture, wallTexture, wainscotTexture, ceilingTexture, neonSignTexture } from './textures.js';
-import { NEON, neonStrip, halo } from './neon.js';
+import { NEON, SHOW_FAKE_HALOS, neonStrip, halo } from './neon.js';
 import { content } from '../content.js';
 
 // Room dimensions in meters. The origin is the center of the floor.
@@ -154,7 +154,10 @@ function createDoor() {
 // Glowing lettering with a halo that flickers now and then.
 function createNeonSign(text, color) {
   const group = new THREE.Group();
-  const material = new THREE.MeshBasicMaterial({ map: neonSignTexture(text, color), transparent: true, toneMapped: false });
+  const texture = neonSignTexture(text, color);
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x000000, map: texture, emissive: 0xffffff, emissiveMap: texture, emissiveIntensity: 1.35, transparent: true,
+  });
   const letters = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 0.31), material);
   letters.position.z = 0.01;
   const glow = halo(2.6, 0.7, color, { shape: 'spot', opacity: 0.35 });
@@ -166,7 +169,7 @@ function createNeonSign(text, color) {
     if (timer <= 0) {
       const dim = Math.random() < 0.3;
       material.opacity = dim ? 0.25 : 1;
-      glow.visible = !dim;
+      glow.visible = SHOW_FAKE_HALOS && !dim;
       timer = dim ? Math.random() * 0.08 : 2 + Math.random() * 5;
     }
   }
