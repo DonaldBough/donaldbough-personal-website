@@ -86,11 +86,31 @@ Put images in `assets/photos/` and set the `src` of an entry in `content.photos`
 
 ## Progress
 
-### [Milestone 1: Cyberpunk lab](docs/milestones/01-cyberpunk-lab/README.md)
+### Milestone 1: Cyberpunk lab
 
-![Walkthrough of the milestone 1 cyberpunk lab](docs/milestones/01-cyberpunk-lab/walkthrough.webp)
+The first explorable room: a magenta-and-cyan cyberpunk lab built with standard Three.js materials, lights and canvas textures (no custom shaders or post-processing yet), playable with a mouse and keyboard or touch controls on a phone. Captured on the WebGL2 fallback renderer.
 
-More clips and screenshots, including the phone controls, are on the [milestone 1 page](docs/milestones/01-cyberpunk-lab/README.md).
+#### Walkthrough
+
+![Desktop walkthrough of the lab](docs/milestones/01-cyberpunk-lab/walkthrough.webp)
+
+Higher quality: [walkthrough.mp4](docs/milestones/01-cyberpunk-lab/walkthrough.mp4)
+
+#### Phone: look, move and tap to strum the guitar
+
+![Phone touch controls: drag to look, joystick to move, tap to interact with the guitar](docs/milestones/01-cyberpunk-lab/mobile-tap-to-strum.webp)
+
+Higher quality: [mobile-tap-to-strum.mp4](docs/milestones/01-cyberpunk-lab/mobile-tap-to-strum.mp4)
+
+#### Screenshots
+
+| | |
+|---|---|
+| ![Title screen](docs/milestones/01-cyberpunk-lab/00-title.jpg) Title screen | ![Spawn view](docs/milestones/01-cyberpunk-lab/01-spawn.jpg) Spawn view |
+| ![Neon DONALDBOUGH.COM sign over the door](docs/milestones/01-cyberpunk-lab/02-door-sign.jpg) Neon sign over the door | ![Terminals](docs/milestones/01-cyberpunk-lab/03-terminals.jpg) Terminals |
+| ![Photo wall](docs/milestones/01-cyberpunk-lab/04-photo-wall.jpg) Photo wall | ![Oscar on his bed](docs/milestones/01-cyberpunk-lab/05-oscar.jpg) Oscar |
+| ![Guitar inspect panel](docs/milestones/01-cyberpunk-lab/07-guitar-inspect.jpg) Guitar inspect panel | ![Phone title screen](docs/milestones/01-cyberpunk-lab/08-mobile-title.jpg) Phone title screen |
+| ![Phone: aiming at the guitar lights up the hand button](docs/milestones/01-cyberpunk-lab/09-mobile-aim.jpg) Phone: hand button lights up on a target | ![Phone: guitar inspect panel](docs/milestones/01-cyberpunk-lab/10-mobile-inspect.jpg) Phone: guitar inspect panel |
 
 ## Roadmap
 
