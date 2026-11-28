@@ -44,11 +44,11 @@ export function halo(width, height, color, { shape = 'strip', opacity = 0.45 } =
 }
 
 // A glowing tube along local x, mounted on a surface facing +z, with a halo behind it.
-export function neonStrip(length, color, { thickness = 0.025, haloHeight = 0.35, damaged = false } = {}) {
+export function neonStrip(length, color, { thickness = 0.05, haloHeight = 0.35, damaged = false, stuttering = false } = {}) {
   const group = new THREE.Group();
   const radius = thickness / 2;
   const geometry = new THREE.CylinderGeometry(radius, radius, length, 12).rotateZ(-Math.PI / 2);
-  const tube = new THREE.Mesh(geometry, createNeonTubeMaterial(color, length, nextStripIndex++, damaged));
+  const tube = new THREE.Mesh(geometry, createNeonTubeMaterial(color, length, nextStripIndex++, { damaged, stuttering }));
   tube.position.z = thickness / 2;
   // Halo stays within the tube length so it never widens a solid prop's collision bounds.
   const glow = halo(length, haloHeight, color);

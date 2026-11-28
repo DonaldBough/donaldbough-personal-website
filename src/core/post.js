@@ -11,7 +11,7 @@ export function createPost(renderer, scene, camera) {
   const emissiveNode = scenePass.getTextureNode('emissive');
 
   // Bloom bright emission without blurring the lit scene color.
-  const bloomPass = bloom(emissiveNode, 0.32, 0.35, 0.91);
+  const bloomPass = bloom(emissiveNode, 0.26, 0.35, 0.91);
   pipeline.outputNode = sceneColor.add(bloomPass);
 
   return { pipeline, scenePass };

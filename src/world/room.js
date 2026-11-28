@@ -36,15 +36,15 @@ export function createRoom() {
   ceiling.position.y = height;
   group.add(ceiling);
 
-  // Four walls: [length, position, rotation]. Each faces the room's interior.
+  // Four walls facing the room's interior.
   const walls = [
     [width, new THREE.Vector3(0, 0, -depth / 2), 0], // north
-    [width, new THREE.Vector3(0, 0, depth / 2), Math.PI], // south
+    [width, new THREE.Vector3(0, 0, depth / 2), Math.PI, { stutteringCeiling: true }], // south
     [depth, new THREE.Vector3(-width / 2, 0, 0), Math.PI / 2], // west
     [depth, new THREE.Vector3(width / 2, 0, 0), -Math.PI / 2], // east
   ];
-  for (const [length, position, rotation] of walls) {
-    group.add(createWall(length, position, rotation));
+  for (const [length, position, rotation, options] of walls) {
+    group.add(createWall(length, position, rotation, options));
   }
 
   group.add(createPipes());
@@ -65,7 +65,7 @@ export function createRoom() {
   };
 }
 
-function createWall(length, position, rotation) {
+function createWall(length, position, rotation, { stutteringCeiling = false } = {}) {
   const { height, wainscotHeight } = ROOM;
   const wall = new THREE.Group();
   wall.position.copy(position);
@@ -94,7 +94,7 @@ function createWall(length, position, rotation) {
 
   const floorNeon = neonStrip(length, NEON.cyan);
   floorNeon.position.y = 0.135;
-  const ceilingNeon = neonStrip(length, NEON.magenta);
+  const ceilingNeon = neonStrip(length, NEON.magenta, { stuttering: stutteringCeiling });
   ceilingNeon.position.y = height - 0.04;
 
   wall.add(upper, lower, trim, baseboard, floorNeon, ceilingNeon);
