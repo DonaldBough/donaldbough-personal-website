@@ -3,9 +3,11 @@ import { glowTexture } from './textures.js';
 
 // Neon tubes and soft glow halos. Halos are additive textured planes, a cheap stand-in for bloom.
 export const NEON = { magenta: 0xff2bd6, cyan: 0x19e6ff };
+export const SHOW_FAKE_HALOS = true;
 
 // The maps reuse materials per color/shape and textures by shape, avoiding duplicate pipelines and canvas uploads.
 const tubeMaterials = new Map();
+const stripMaterials = new Map();
 const haloMaterials = new Map();
 const haloTextures = {};
 const ignoreRaycast = () => {};
@@ -14,6 +16,14 @@ const ignoreRaycast = () => {};
 export function neonMaterial(color) {
   if (!tubeMaterials.has(color)) tubeMaterials.set(color, new THREE.MeshBasicMaterial({ color, toneMapped: false }));
   return tubeMaterials.get(color);
+}
+
+function neonStripMaterial(color) {
+  // YOUR TURN: Raise emissiveIntensity above 1 to give the bloom threshold a brighter source.
+  if (!stripMaterials.has(color)) {
+    stripMaterials.set(color, new THREE.MeshStandardMaterial({ color: 0x000000, emissive: color, emissiveIntensity: 1.0 }));
+  }
+  return stripMaterials.get(color);
 }
 
 // A glow plane facing +z. Halos don't block interaction raycasts.
@@ -35,6 +45,7 @@ export function halo(width, height, color, { shape = 'strip', opacity = 0.45 } =
     );
   }
   const plane = new THREE.Mesh(new THREE.PlaneGeometry(width, height), haloMaterials.get(key));
+  plane.visible = SHOW_FAKE_HALOS;
   plane.raycast = ignoreRaycast;
   return plane;
 }
@@ -42,7 +53,7 @@ export function halo(width, height, color, { shape = 'strip', opacity = 0.45 } =
 // A glowing tube along local x, mounted on a surface facing +z, with a halo behind it.
 export function neonStrip(length, color, { thickness = 0.025, haloHeight = 0.35 } = {}) {
   const group = new THREE.Group();
-  const tube = new THREE.Mesh(new THREE.BoxGeometry(length, thickness, thickness), neonMaterial(color));
+  const tube = new THREE.Mesh(new THREE.BoxGeometry(length, thickness, thickness), neonStripMaterial(color));
   tube.position.z = thickness / 2;
   // Halo stays within the tube length so it never widens a solid prop's collision bounds.
   const glow = halo(length, haloHeight, color);
