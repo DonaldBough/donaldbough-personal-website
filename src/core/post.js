@@ -10,9 +10,9 @@ export function createPost(renderer, scene, camera) {
   const sceneColor = scenePass.getTextureNode('output');
   const emissiveNode = scenePass.getTextureNode('emissive');
 
-  // YOUR TURN: Build bloom(emissiveNode, strength, radius, threshold) to soften bright emission.
-  // YOUR TURN: Replace the fallback with sceneColor.add(bloomPass) to layer the glow over the scene.
-  pipeline.outputNode = sceneColor;
+  // Bloom bright emission without blurring the lit scene color.
+  const bloomPass = bloom(emissiveNode, 0.32, 0.35, 0.91);
+  pipeline.outputNode = sceneColor.add(bloomPass);
 
   return { pipeline, scenePass };
 }

@@ -3,7 +3,7 @@ import { glowTexture } from './textures.js';
 
 // Neon tubes and soft glow halos. Halos are additive textured planes, a cheap stand-in for bloom.
 export const NEON = { magenta: 0xff2bd6, cyan: 0x19e6ff };
-export const SHOW_FAKE_HALOS = true;
+export const SHOW_FAKE_HALOS = false;
 
 // The maps reuse materials per color/shape and textures by shape, avoiding duplicate pipelines and canvas uploads.
 const tubeMaterials = new Map();
@@ -19,9 +19,8 @@ export function neonMaterial(color) {
 }
 
 function neonStripMaterial(color) {
-  // YOUR TURN: Raise emissiveIntensity above 1 to give the bloom threshold a brighter source.
   if (!stripMaterials.has(color)) {
-    stripMaterials.set(color, new THREE.MeshStandardMaterial({ color: 0x000000, emissive: color, emissiveIntensity: 1.0 }));
+    stripMaterials.set(color, new THREE.MeshStandardMaterial({ color: 0x000000, emissive: color, emissiveIntensity: 3.5 }));
   }
   return stripMaterials.get(color);
 }

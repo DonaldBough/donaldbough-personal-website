@@ -154,7 +154,10 @@ function createDoor() {
 // Glowing lettering with a halo that flickers now and then.
 function createNeonSign(text, color) {
   const group = new THREE.Group();
-  const material = new THREE.MeshBasicMaterial({ map: neonSignTexture(text, color), transparent: true, toneMapped: false });
+  const texture = neonSignTexture(text, color);
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x000000, map: texture, emissive: 0xffffff, emissiveMap: texture, emissiveIntensity: 1.35, transparent: true,
+  });
   const letters = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 0.31), material);
   letters.position.z = 0.01;
   const glow = halo(2.6, 0.7, color, { shape: 'spot', opacity: 0.35 });
