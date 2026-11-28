@@ -1,7 +1,8 @@
 import * as THREE from 'three/webgpu';
 import { materials, mesh } from './materials.js';
 import { floorTexture, floorGlowTexture, wallTexture, wainscotTexture, ceilingTexture, neonSignTexture } from './textures.js';
-import { NEON, SHOW_FAKE_HALOS, neonStrip, halo } from './neon.js';
+import { NEON, neonStrip, halo } from './neon.js';
+import { createNeonSignMaterial } from './neonMaterial.js';
 import { content } from '../content.js';
 
 // Room dimensions in meters. The origin is the center of the floor.
@@ -35,15 +36,15 @@ export function createRoom() {
   ceiling.position.y = height;
   group.add(ceiling);
 
-  // Four walls: [length, position, rotation]. Each faces the room's interior.
+  // Four walls facing the room's interior.
   const walls = [
     [width, new THREE.Vector3(0, 0, -depth / 2), 0], // north
-    [width, new THREE.Vector3(0, 0, depth / 2), Math.PI], // south
+    [width, new THREE.Vector3(0, 0, depth / 2), Math.PI, { stutteringCeiling: true }], // south
     [depth, new THREE.Vector3(-width / 2, 0, 0), Math.PI / 2], // west
     [depth, new THREE.Vector3(width / 2, 0, 0), -Math.PI / 2], // east
   ];
-  for (const [length, position, rotation] of walls) {
-    group.add(createWall(length, position, rotation));
+  for (const [length, position, rotation, options] of walls) {
+    group.add(createWall(length, position, rotation, options));
   }
 
   group.add(createPipes());
@@ -54,18 +55,17 @@ export function createRoom() {
   group.add(door);
 
   const sign = createNeonSign('DONALDBOUGH.COM', NEON.magenta);
-  sign.object.position.set(3, 2.8, depth / 2 - 0.02);
-  sign.object.rotation.y = Math.PI;
-  group.add(sign.object);
+  sign.position.set(3, 2.8, depth / 2 - 0.02);
+  sign.rotation.y = Math.PI;
+  group.add(sign);
 
   return {
     object: group,
     interactables: [{ object: door, ...content.door }],
-    update: sign.update,
   };
 }
 
-function createWall(length, position, rotation) {
+function createWall(length, position, rotation, { stutteringCeiling = false } = {}) {
   const { height, wainscotHeight } = ROOM;
   const wall = new THREE.Group();
   wall.position.copy(position);
@@ -94,7 +94,7 @@ function createWall(length, position, rotation) {
 
   const floorNeon = neonStrip(length, NEON.cyan);
   floorNeon.position.y = 0.135;
-  const ceilingNeon = neonStrip(length, NEON.magenta);
+  const ceilingNeon = neonStrip(length, NEON.magenta, { stuttering: stutteringCeiling });
   ceilingNeon.position.y = height - 0.04;
 
   wall.add(upper, lower, trim, baseboard, floorNeon, ceilingNeon);
@@ -155,23 +155,11 @@ function createDoor() {
 function createNeonSign(text, color) {
   const group = new THREE.Group();
   const texture = neonSignTexture(text, color);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x000000, map: texture, emissive: 0xffffff, emissiveMap: texture, emissiveIntensity: 1.35, transparent: true,
-  });
+  const material = createNeonSignMaterial(texture);
   const letters = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 0.31), material);
   letters.position.z = 0.01;
   const glow = halo(2.6, 0.7, color, { shape: 'spot', opacity: 0.35 });
   group.add(glow, letters);
 
-  let timer = 0;
-  function update(dt) {
-    timer -= dt;
-    if (timer <= 0) {
-      const dim = Math.random() < 0.3;
-      material.opacity = dim ? 0.25 : 1;
-      glow.visible = SHOW_FAKE_HALOS && !dim;
-      timer = dim ? Math.random() * 0.08 : 2 + Math.random() * 5;
-    }
-  }
-  return { object: group, update };
+  return group;
 }

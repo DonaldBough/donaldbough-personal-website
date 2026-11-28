@@ -11,7 +11,7 @@ export function createTerminalStation({ backend }) {
   const desk = createDesk({ width: 3.2, depth: 0.8 });
   group.add(desk);
 
-  const deskNeon = neonStrip(3.2, NEON.magenta, { thickness: 0.015, haloHeight: 0.12 });
+  const deskNeon = neonStrip(3.2, NEON.magenta, { thickness: 0.03, haloHeight: 0.12, damaged: true });
   deskNeon.position.set(0, 0.725, 0.4);
   group.add(deskNeon);
 
